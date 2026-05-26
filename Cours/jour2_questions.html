@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular 20 - Jour 2 - Questions/Réponses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .qa-section {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .qa-section:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .qa-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .qa-toggle:hover {
+            background: #e9ecef;
+        }
+
+        .qa-toggle.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .qa-toggle::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            transform: rotate(0deg);
+        }
+
+        .qa-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .qa-content {
+            display: none;
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .qa-content.active {
+            display: block;
+            padding: 20px;
+            max-height: 2000px;
+        }
+
+        .answer {
+            line-height: 1.8;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .answer strong {
+            color: #667eea;
+        }
+
+        .answer ul, .answer ol {
+            margin: 15px 0 15px 20px;
+        }
+
+        .answer li {
+            margin: 8px 0;
+        }
+
+        .answer code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .answer pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            padding: 15px 20px;
+            background: #667eea;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .expand-all {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .expand-all button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .expand-all button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .tip {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Angular 20 - Jour 2</h1>
+            <p>Questions & Réponses - Réactivité & Composants Avancés</p>
+        </div>
+
+        <div class="expand-all">
+            <button onclick="expandAll()">📖 Afficher toutes les réponses</button>
+            <button onclick="collapseAll()" style="margin-left: 10px;">📁 Masquer toutes les réponses</button>
+        </div>
+
+        <!-- SECTION 1: PROGRAMMATION RÉACTIVE -->
+        <div class="section-title">🌊 PARTIE 1 : PROGRAMMATION RÉACTIVE & RxJS</div>
+
+        <!-- Q1 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q1 : Quelle est la différence entre programmation impérative et déclarative ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Impératif :</strong>
+                    <ul>
+                        <li>On décrit <strong>comment</strong> faire étape par étape</li>
+                        <li>Les changements ne se propagent pas automatiquement</li>
+                        <li>Exemple : <code>let c = a + b; a = 20; // c reste inchangé</code></li>
+                    </ul>
+
+                    <strong>Déclaratif (Réactif) :</strong>
+                    <ul>
+                        <li>On décrit <strong>quoi</strong> faire, le système gère le comment</li>
+                        <li>Les changements se propagent automatiquement</li>
+                        <li>Exemple avec Signals : <code>c = computed(() => a() + b()); a.set(20); // c se met à jour !</code></li>
+                    </ul>
+
+                    <div class="success">
+                        <strong>✅ Avantage :</strong> Code plus prévisible, moins d'erreurs, meilleure réactivité UI.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q2 : Qu'est-ce qu'un flux de données (data stream) ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Une séquence d'événements ou de valeurs qui se produisent dans le temps, qu'on peut observer et transformer.</p>
+
+                    <strong>Exemple concret :</strong>
+                    <pre>Utilisateur tape "a" (temps 0ms)
+    ↓
+Utilisateur tape "n" (temps 100ms)
+    ↓
+Utilisateur tape "g" (temps 200ms)
+    ↓
+Flux d'événements : ["a", "an", "ang"]
+    ↓
+Application réagit après 300ms d'inactivité</pre>
+
+                    <strong>Types de flux :</strong>
+                    <ul>
+                        <li>Clics sur un bouton : <code>button.click$</code></li>
+                        <li>Valeurs d'un input : <code>input.valueChanges$</code></li>
+                        <li>Réponses HTTP : <code>http.get('/users')$</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q3 : Quelle est la différence entre Observable et Promesse ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Promesse :</strong>
+                    <ul>
+                        <li>Émet <strong>une seule valeur</strong></li>
+                        <li>Non annulable</li>
+                        <li>Exécution immédiate</li>
+                        <li>Usage : requêtes HTTP simples</li>
+                    </ul>
+
+                    <strong>Observable :</strong>
+                    <ul>
+                        <li>Émet <strong>plusieurs valeurs</strong> dans le temps</li>
+                        <li>Annulable avec <code>unsubscribe()</code></li>
+                        <li>Exécution lazy (démarre au subscribe)</li>
+                        <li>Usage : événements, streams, WebSockets</li>
+                    </ul>
+
+                    <pre>// Promesse
+new Promise(resolve => resolve('Valeur'));
+
+// Observable
+new Observable(observer => {
+  observer.next('Valeur 1');
+  observer.next('Valeur 2');
+  observer.next('Valeur 3');
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q4 : Expliquez la différence entre Observable "cold" et "hot"</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Cold Observable :</strong>
+                    <ul>
+                        <li>Commence à émettre <strong>uniquement quand on s'abonne</strong></li>
+                        <li>Chaque souscription reçoit des valeurs <strong>indépendantes</strong></li>
+                        <li>Exemple : requête HTTP, intervalle créé à la souscription</li>
+                    </ul>
+
+                    <strong>Hot Observable :</strong>
+                    <ul>
+                        <li>Émet des valeurs <strong>indépendamment des souscriptions</strong></li>
+                        <li>Les abonnés <strong>partagent le flux</strong></li>
+                        <li>Exemple : Subject, événements DOM, WebSocket</li>
+                    </ul>
+
+                    <pre>// Cold - valeurs différentes
+const cold$ = new Observable(obs => obs.next(Math.random()));
+cold$.subscribe(val => console.log('Sub 1:', val)); // 0.456
+cold$.subscribe(val => console.log('Sub 2:', val)); // 0.789
+
+// Hot - valeur partagée
+const hot$ = new Subject();
+hot$.subscribe(val => console.log('Sub 1:', val));
+hot$.subscribe(val => console.log('Sub 2:', val));
+hot$.next(1); // Les deux affichent 1</pre>
+
+                    <div class="tip">
+                        <strong>💡 Astuce :</strong> Si vous voyez <code>new Observable()</code>, c'est cold. Si c'est un <code>Subject</code>, c'est hot.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q5 : À quoi sert debounceTime(300) ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Attend <strong>300ms d'inactivité</strong> avant d'émettre la dernière valeur.</p>
+
+                    <strong>Cas d'usage principal :</strong>
+                    <ul>
+                        <li>Recherche en temps réel (éviter trop de requêtes)</li>
+                        <li>Validation de formulaire (attendre que l'utilisateur finisse de taper)</li>
+                        <li>Auto-save (sauvegarder après inactivité)</li>
+                    </ul>
+
+                    <pre>searchControl.valueChanges.pipe(
+  debounceTime(300),  // Attend 300ms après la dernière frappe
+  distinctUntilChanged()  // Ignore si même valeur
+).subscribe(term => {
+  // Faire la recherche
+});</pre>
+
+                    <div class="success">
+                        <strong>✅ Résultat :</strong> Si l'utilisateur tape "angular" rapidement, une seule recherche est lancée (pas 7).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q6 : Quelle est la différence entre map et switchMap ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>map :</strong>
+                    <ul>
+                        <li>Transforme chaque valeur (synchrone)</li>
+                        <li>Retourne une valeur simple</li>
+                        <li>Exemple : <code>map(x => x * 2)</code></li>
+                    </ul>
+
+                    <strong>switchMap :</strong>
+                    <ul>
+                        <li>Transforme en un <strong>nouvel Observable</strong></li>
+                        <li><strong>Annule</strong> l'Observable précédent</li>
+                        <li>Idéal pour les requêtes HTTP successives</li>
+                    </ul>
+
+                    <pre>// map : transformation simple
+source$.pipe(
+  map(x => x * 2)
+).subscribe(console.log);
+
+// switchMap : requêtes HTTP
+searchInput$.pipe(
+  debounceTime(300),
+  switchMap(term => http.get(`/search?q=${term}`))
+  // ⚠️ Si nouvelle recherche → annule la précédente
+).subscribe(results => console.log(results));</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Important :</strong> switchMap évite les réponses désordonnées en annulant les anciennes requêtes.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q7 : Comment éviter les fuites mémoire avec les Observables ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>3 méthodes :</strong>
+
+                    <p><strong>1. Async Pipe (RECOMMANDÉ) :</strong></p>
+                    <pre>// Template
+&lt;p&gt;{{ data$ | async }}&lt;/p&gt;
+
+// Composant
+data$ = this.service.getData();
+// Pas de subscribe, pas de unsubscribe !</pre>
+
+                    <p><strong>2. takeUntil avec Subject :</strong></p>
+                    <pre>private destroy$ = new Subject&lt;void&gt;();
+
+ngOnInit() {
+  this.service.getData().pipe(
+    takeUntil(this.destroy$)
+  ).subscribe(data => this.data = data);
+}
+
+ngOnDestroy() {
+  this.destroy$.next();
+  this.destroy$.complete();
+}</pre>
+
+                    <p><strong>3. Array de Subscriptions :</strong></p>
+                    <pre>private subs: Subscription[] = [];
+
+ngOnInit() {
+  const sub = this.service.getData().subscribe(...);
+  this.subs.push(sub);
+}
+
+ngOnDestroy() {
+  this.subs.forEach(sub => sub.unsubscribe());
+}</pre>
+
+                    <div class="success">
+                        <strong>✅ Best Practice :</strong> Utiliser l'async pipe partout où c'est possible.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: SIGNALS -->
+        <div class="section-title">⚡ PARTIE 2 : SIGNALS (API MODERNE)</div>
+
+        <!-- Q8 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q8 : Qu'est-ce qu'un Signal en Angular ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Une <strong>valeur réactive synchrone</strong> qui notifie automatiquement ses dépendants quand elle change.</p>
+
+                    <strong>Caractéristiques :</strong>
+                    <ul>
+                        <li>Synchrone (pas d'async/await)</li>
+                        <li>Détection de changements optimale</li>
+                        <li>Lecture avec <code>()</code></li>
+                        <li>Modification avec <code>.set()</code> ou <code>.update()</code></li>
+                    </ul>
+
+                    <pre>import { signal } from '@angular/core';
+
+// Créer
+const count = signal(0);
+
+// Lire
+console.log(count()); // 0
+
+// Modifier
+count.set(5);
+count.update(v => v + 1);
+
+console.log(count()); // 6</pre>
+
+                    <div class="tip">
+                        <strong>💡 Nouveau en Angular 16+ :</strong> Les Signals sont l'avenir de la réactivité dans Angular.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q9 : Quelle est la différence entre signal() et computed() ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>signal() :</strong>
+                    <ul>
+                        <li>Valeur <strong>modifiable manuellement</strong></li>
+                        <li>Utilise <code>.set()</code> ou <code>.update()</code></li>
+                        <li>Source de vérité</li>
+                    </ul>
+
+                    <strong>computed() :</strong>
+                    <ul>
+                        <li>Valeur <strong>dérivée readonly</strong></li>
+                        <li>Se recalcule <strong>automatiquement</strong> quand dépendances changent</li>
+                        <li>Memoïsée (pas de recalcul inutile)</li>
+                    </ul>
+
+                    <pre>// signal - modifiable
+const count = signal(0);
+count.set(5);
+
+// computed - dérivé
+const double = computed(() => count() * 2);
+console.log(double()); // 10
+
+count.set(10);
+console.log(double()); // 20 (mis à jour automatiquement !)</pre>
+
+                    <div class="success">
+                        <strong>✅ Règle :</strong> signal() pour l'état, computed() pour les valeurs dérivées.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q10 : À quoi sert effect() ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Exécute des <strong>effets de bord</strong> quand les signals dont il dépend changent.</p>
+
+                    <strong>Cas d'usage :</strong>
+                    <ul>
+                        <li>Logging / debugging</li>
+                        <li>Sauvegarder dans localStorage</li>
+                        <li>Synchroniser avec une API externe</li>
+                        <li>Analytics / tracking</li>
+                    </ul>
+
+                    <pre>import { effect } from '@angular/core';
+
+const count = signal(0);
+
+// Effect s'exécute à chaque changement
+effect(() => {
+  console.log('Count changed:', count());
+  localStorage.setItem('count', count().toString());
+});
+
+count.set(5); // Log + localStorage automatiquement !</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Attention :</strong> N'utilisez pas effect() pour du logic métier. Préférez computed() pour les calculs.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q11 : Quelle est la différence entre Observable et Signal ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Observable (RxJS) :</strong>
+                    <ul>
+                        <li><strong>Asynchrone</strong></li>
+                        <li>Flux de valeurs dans le temps</li>
+                        <li>Nécessite <code>subscribe()</code></li>
+                        <li>Idéal pour : HTTP, WebSocket, événements</li>
+                    </ul>
+
+                    <strong>Signal :</strong>
+                    <ul>
+                        <li><strong>Synchrone</strong></li>
+                        <li>Valeur d'état réactive</li>
+                        <li>Lecture directe avec <code>()</code></li>
+                        <li>Idéal pour : état local, données UI</li>
+                    </ul>
+
+                    <pre>// Observable - asynchrone
+const data$ = http.get('/api/users');
+data$.subscribe(users => console.log(users));
+
+// Signal - synchrone
+const users = signal&lt;User[]&gt;([]);
+console.log(users()); // Accès immédiat</pre>
+
+                    <div class="success">
+                        <strong>✅ Ils se complètent :</strong> Signals pour l'état, Observables pour l'asynchrone.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q12 : Comment convertir Signal ↔ Observable ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Signal → Observable :</strong>
+                    <pre>import { toObservable } from '@angular/core/rxjs-interop';
+
+const count = signal(0);
+const count$ = toObservable(count);
+
+count$.subscribe(val => console.log('Changed:', val));</pre>
+
+                    <strong>Observable → Signal :</strong>
+                    <pre>import { toSignal } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
+
+const time$ = interval(1000);
+const timeSignal = toSignal(time$, { initialValue: 0 });
+
+console.log(timeSignal()); // 0, 1, 2, 3...</pre>
+
+                    <div class="tip">
+                        <strong>💡 Usage :</strong> Utilisez toSignal pour transformer les Observables RxJS en Signals dans vos composants.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: MODE ZONELESS -->
+        <div class="section-title">🚀 PARTIE 3 : MODE ZONELESS & PERFORMANCES</div>
+
+        <!-- Q13 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q13 : Qu'est-ce que Zone.js et que fait-il ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Une bibliothèque qui <strong>intercepte tous les événements asynchrones</strong> (timers, événements DOM, HTTP, etc.) pour déclencher automatiquement la détection de changements.</p>
+
+                    <strong>Fonctionnement :</strong>
+                    <pre>// Zone.js intercepte TOUT
+setTimeout(() => { ... })      → Détection
+button.click()                 → Détection
+http.get('/api')              → Détection
+Promise.then()                → Détection</pre>
+
+                    <strong>Avantages :</strong>
+                    <ul>
+                        <li>Détection automatique partout</li>
+                        <li>Pas besoin de déclencher manuellement</li>
+                    </ul>
+
+                    <strong>Inconvénients :</strong>
+                    <ul>
+                        <li>Performances réduites</li>
+                        <li>Bugs occasionnels</li>
+                        <li>Bundle size augmenté</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q14 : Quels sont les avantages du mode Zoneless ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Performances :</strong>
+                    <ul>
+                        <li>+30% à +50% plus rapide</li>
+                        <li>Moins de vérifications de changements</li>
+                        <li>Bundle plus léger (~10 KB économisés)</li>
+                    </ul>
+
+                    <strong>Qualité du code :</strong>
+                    <ul>
+                        <li>Plus prévisible</li>
+                        <li>Meilleure gestion mémoire</li>
+                        <li>Supprime les bugs Zone.js</li>
+                    </ul>
+
+                    <pre>// Activer Zoneless
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideExperimentalZonelessChangeDetection()
+  ]
+});</pre>
+
+                    <div class="success">
+                        <strong>✅ Recommandé :</strong> Activez le mode Zoneless pour tous les nouveaux projets Angular 17+.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q15 : Comment Angular détecte-t-il les changements en mode Zoneless ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Uniquement via 3 mécanismes :</p>
+
+                    <strong>1. Signals :</strong>
+                    <pre>count.set(5);           // ✅ Déclenche détection
+count.update(v => v + 1); // ✅ Déclenche détection</pre>
+
+                    <strong>2. Async Pipe :</strong>
+                    <pre>&lt;p&gt;{{ data$ | async }}&lt;/p&gt; 
+// ✅ Détection automatique</pre>
+
+                    <strong>3. Événements DOM :</strong>
+                    <pre>&lt;button (click)="onClick()"&gt;Click&lt;/button&gt;
+// ✅ Détection au clic</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Important :</strong>
+                        <pre>// ❌ Ne déclenche PAS de détection en Zoneless
+setTimeout(() => {
+  this.count++; // Mutation directe
+}, 1000);
+
+// ✅ Déclenche la détection
+count = signal(0);
+setTimeout(() => {
+  this.count.set(this.count() + 1); // Signal
+}, 1000);</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: SERVICES -->
+        <div class="section-title">🛠️ PARTIE 4 : SERVICES & INJECTION DE DÉPENDANCES</div>
+
+        <!-- Q16 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q16 : À quoi sert un service en Angular ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Responsabilités :</strong>
+                    <ul>
+                        <li><strong>Logique métier :</strong> Calculs, transformations</li>
+                        <li><strong>Partage de données :</strong> Entre composants</li>
+                        <li><strong>Requêtes HTTP :</strong> API calls</li>
+                        <li><strong>État global :</strong> Store, cache</li>
+                    </ul>
+
+                    <pre>@Injectable({ providedIn: 'root' })
+export class UserService {
+  private users = signal&lt;User[]&gt;([]);
+  readonly usersList = this.users.asReadonly();
+
+  addUser(user: User) {
+    this.users.update(users => [...users, user]);
+  }
+
+  loadUsers() {
+    return this.http.get&lt;User[]&gt;('/api/users');
+  }
+}</pre>
+
+                    <div class="success">
+                        <strong>✅ Règle d'or :</strong> Composants = Présentation. Services = Logique métier.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q17 : Que signifie providedIn: 'root' ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Le service est un <strong>singleton global</strong> fourni au niveau de l'application entière.</p>
+
+                    <strong>Comportement :</strong>
+                    <ul>
+                        <li>Une seule instance pour toute l'application</li>
+                        <li>Partagée par tous les composants</li>
+                        <li>Disponible immédiatement</li>
+                        <li>Tree-shakable (supprimé si non utilisé)</li>
+                    </ul>
+
+                    <pre>@Injectable({ providedIn: 'root' })
+export class MyService {
+  // Une seule instance globale
+}</pre>
+
+                    <div class="tip">
+                        <strong>💡 Best Practice :</strong> Utilisez providedIn: 'root' pour 90% de vos services.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q18 : Qu'est-ce que la hiérarchie des injecteurs ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Angular a plusieurs niveaux d'injecteurs qui forment une hiérarchie :</p>
+
+                    <pre>┌─────────────────┐
+│   ROOT          │ ← providedIn: 'root' (singleton global)
+└────────┬────────┘
+         │
+    ┌────▼─────┐
+    │  MODULE  │ ← Module provider
+    └────┬─────┘
+         │
+    ┌────▼─────┐
+    │COMPONENT │ ← Component provider (instance locale)
+    └──────────┘</pre>
+
+                    <strong>Résolution :</strong>
+                    <p>Angular cherche le service du <strong>bas vers le haut</strong> :</p>
+                    <ol>
+                        <li>Composant actuel</li>
+                        <li>Composant parent</li>
+                        <li>Module</li>
+                        <li>Root</li>
+                    </ol>
+
+                    <pre>// Service global
+@Injectable({ providedIn: 'root' })
+export class GlobalService { }
+
+// Service local (nouvelle instance par composant)
+@Component({
+  providers: [LocalService]
+})
+export class MyComponent { }</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: COMMUNICATION -->
+        <div class="section-title">💬 PARTIE 5 : COMMUNICATION ENTRE COMPOSANTS</div>
+
+        <!-- Q19 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q19 : Quelles sont les 3 méthodes pour faire communiquer des composants ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>1. @Input() : Parent → Enfant</strong>
+                    <pre>// Enfant
+@Input() message!: string;
+
+// Parent
+&lt;app-enfant [message]="'Hello'"&gt;&lt;/app-enfant&gt;</pre>
+
+                    <strong>2. @Output() : Enfant → Parent</strong>
+                    <pre>// Enfant
+@Output() clicked = new EventEmitter&lt;string&gt;();
+this.clicked.emit('Data');
+
+// Parent
+&lt;app-enfant (clicked)="onClicked($event)"&gt;&lt;/app-enfant&gt;</pre>
+
+                    <strong>3. Service : Frères/Éloignés</strong>
+                    <pre>@Injectable({ providedIn: 'root' })
+export class MessageService {
+  private subject = new Subject&lt;string&gt;();
+  message$ = this.subject.asObservable();
+
+  send(msg: string) {
+    this.subject.next(msg);
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q20 : Quelle est la différence entre @Input() et input() (Signal) ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>@Input() (Ancien) :</strong>
+                    <ul>
+                        <li>Décorateur classique</li>
+                        <li>Pas réactif nativement</li>
+                        <li>Angular &lt; 17</li>
+                    </ul>
+
+                    <strong>input() (Nouveau - Signal) :</strong>
+                    <ul>
+                        <li>API Signal native</li>
+                        <li>Plus performant</li>
+                        <li>Permet computed() basés sur inputs</li>
+                        <li>Angular 17+</li>
+                    </ul>
+
+                    <pre>// ❌ Ancien
+@Input() age!: number;
+
+// ✅ Nouveau (recommandé)
+age = input.required&lt;number&gt;();
+estMajeur = computed(() => this.age() >= 18);</pre>
+
+                    <div class="success">
+                        <strong>✅ Recommandation :</strong> Utilisez input() pour tous les nouveaux projets Angular 17+.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: CYCLE DE VIE -->
+        <div class="section-title">♻️ PARTIE 6 : CYCLE DE VIE DES COMPOSANTS</div>
+
+        <!-- Q21 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q21 : Citez les 6 hooks principaux du cycle de vie</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Ordre d'exécution :</strong>
+                    <ol>
+                        <li><code>ngOnInit</code> - Initialisation</li>
+                        <li><code>ngOnChanges</code> - Changement d'inputs</li>
+                        <li><code>ngDoCheck</code> - Détection personnalisée</li>
+                        <li><code>ngAfterViewInit</code> - Vue initialisée</li>
+                        <li><code>ngAfterContentInit</code> - Contenu initialisé</li>
+                        <li><code>ngOnDestroy</code> - Avant destruction</li>
+                    </ol>
+
+                    <pre>export class MyComponent implements OnInit, OnDestroy {
+  ngOnInit() {
+    // Initialisation, appels API, souscriptions
+  }
+
+  ngOnDestroy() {
+    // Nettoyage, unsubscribe, clearInterval
+  }
+}</pre>
+
+                    <div class="tip">
+                        <strong>💡 Les plus utilisés :</strong> ngOnInit (90%) et ngOnDestroy (cleanup).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q22 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q22 : Quelle est la différence entre constructor() et ngOnInit() ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>constructor() :</strong>
+                    <ul>
+                        <li>Injection de dépendances <strong>uniquement</strong></li>
+                        <li>Le composant n'est pas encore prêt</li>
+                        <li>Pas d'accès aux inputs/outputs</li>
+                        <li>Pas d'accès au DOM</li>
+                    </ul>
+
+                    <strong>ngOnInit() :</strong>
+                    <ul>
+                        <li>Initialisation complète</li>
+                        <li>Inputs disponibles</li>
+                        <li>Idéal pour appels API</li>
+                        <li>Idéal pour souscriptions</li>
+                    </ul>
+
+                    <pre>// ❌ Mauvais
+constructor(private http: HttpClient) {
+  this.http.get('/api/users').subscribe(...); // Trop tôt !
+}
+
+// ✅ Bon
+ngOnInit() {
+  this.http.get('/api/users').subscribe(...);
+}</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Règle :</strong> Constructor = injection. ngOnInit = logique.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: FORMULAIRES -->
+        <div class="section-title">📝 PARTIE 7 : FORMULAIRES RÉACTIFS</div>
+
+        <!-- Q23 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q23 : Quelle est la différence entre Template-Driven et Reactive Forms ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Template-Driven (ancien) :</strong>
+                    <ul>
+                        <li>Logique dans le template avec <code>[(ngModel)]</code></li>
+                        <li>Moins testable</li>
+                        <li>Moins prévisible</li>
+                        <li>Validation limitée</li>
+                    </ul>
+
+                    <strong>Reactive Forms (recommandé) :</strong>
+                    <ul>
+                        <li>Logique en TypeScript</li>
+                        <li>Plus testable</li>
+                        <li>Plus prévisible</li>
+                        <li>Validation complexe facile</li>
+                        <li>Observables (valueChanges)</li>
+                    </ul>
+
+                    <pre>// ❌ Template-Driven
+&lt;input [(ngModel)]="email" required&gt;
+
+// ✅ Reactive Forms
+emailControl = new FormControl('', [
+  Validators.required,
+  Validators.email
+]);
+
+&lt;input [formControl]="emailControl"&gt;</pre>
+
+                    <div class="success">
+                        <strong>✅ Recommandation :</strong> Toujours utiliser Reactive Forms.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q24 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q24 : Citez 5 validateurs Angular intégrés</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Validateurs courants :</strong>
+                    <ol>
+                        <li><code>Validators.required</code> - Champ obligatoire</li>
+                        <li><code>Validators.email</code> - Format email</li>
+                        <li><code>Validators.minLength(n)</code> - Longueur minimale</li>
+                        <li><code>Validators.maxLength(n)</code> - Longueur maximale</li>
+                        <li><code>Validators.min(n)</code> - Valeur minimale (nombre)</li>
+                        <li><code>Validators.max(n)</code> - Valeur maximale</li>
+                        <li><code>Validators.pattern(regex)</code> - Expression régulière</li>
+                    </ol>
+
+                    <pre>email = new FormControl('', [
+  Validators.required,
+  Validators.email
+]);
+
+age = new FormControl(0, [
+  Validators.required,
+  Validators.min(18),
+  Validators.max(100)
+]);
+
+password = new FormControl('', [
+  Validators.required,
+  Validators.minLength(8),
+  Validators.pattern(/^(?=.*[A-Z])/)
+]);</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q25 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q25 : Comment créer un validateur personnalisé ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Structure :</strong>
+                    <pre>export function ageMinValidator(min: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null; // Ne valide pas si vide
+    
+    if (control.value < min) {
+      return { 
+        ageMin: { 
+          requiredAge: min, 
+          actualAge: control.value 
+        } 
+      };
+    }
+    
+    return null; // Valide
+  };
+}</pre>
+
+                    <strong>Utilisation :</strong>
+                    <pre>age = new FormControl(0, [
+  Validators.required,
+  ageMinValidator(18)
+]);
+
+// Template
+@if (age.errors?.['ageMin']) {
+  &lt;p&gt;Vous devez avoir au moins 
+     {{ age.errors?.['ageMin'].requiredAge }} ans&lt;/p&gt;
+}</pre>
+
+                    <div class="tip">
+                        <strong>💡 Retour :</strong> ValidationErrors (objet) si invalide, null si valide.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q26 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q26 : À quoi servent valueChanges et statusChanges ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>valueChanges :</strong>
+                    <p>Observable qui émet à chaque changement de valeur</p>
+                    <pre>searchControl.valueChanges.pipe(
+  debounceTime(300),
+  distinctUntilChanged()
+).subscribe(term => {
+  // Faire la recherche
+});</pre>
+
+                    <strong>statusChanges :</strong>
+                    <p>Observable qui émet à chaque changement de statut (VALID, INVALID, PENDING)</p>
+                    <pre>form.statusChanges.subscribe(status => {
+  console.log(status); // 'VALID' | 'INVALID' | 'PENDING'
+  
+  if (status === 'VALID') {
+    this.enableSubmit = true;
+  }
+});</pre>
+
+                    <div class="success">
+                        <strong>✅ Usage :</strong> valueChanges pour la recherche réactive, statusChanges pour activer/désactiver des boutons.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: BONNES PRATIQUES -->
+        <div class="section-title">✨ PARTIE 8 : BONNES PRATIQUES</div>
+
+        <!-- Q27 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q27 : Où mettre la logique métier : composant ou service ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>✅ DANS LE SERVICE :</strong>
+                    <ul>
+                        <li>Logique métier et calculs</li>
+                        <li>Appels API</li>
+                        <li>Transformations de données</li>
+                        <li>État partagé</li>
+                    </ul>
+
+                    <strong>✅ DANS LE COMPOSANT :</strong>
+                    <ul>
+                        <li>Présentation uniquement</li>
+                        <li>Gestion du template</li>
+                        <li>Événements UI</li>
+                        <li>Navigation</li>
+                    </ul>
+
+                    <pre>// ❌ Mauvais - logique dans le composant
+export class UserComponent {
+  calculateTotal(users: User[]) {
+    return users.reduce((sum, u) => sum + u.value, 0);
+  }
+}
+
+// ✅ Bon - logique dans le service
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  readonly total = computed(() => 
+    this.users().reduce((sum, u) => sum + u.value, 0)
+  );
+}</pre>
+
+                    <div class="success">
+                        <strong>✅ Règle d'or :</strong> Composants légers, services intelligents.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q28 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q28 : Pourquoi préférer l'async pipe au subscribe manuel ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Avantages de l'async pipe :</strong>
+                    <ul>
+                        <li>✅ Gère subscribe/unsubscribe automatiquement</li>
+                        <li>✅ Pas de fuites mémoire</li>
+                        <li>✅ Code plus propre et déclaratif</li>
+                        <li>✅ Moins de code boilerplate</li>
+                        <li>✅ Détection de changements optimale</li>
+                    </ul>
+
+                    <pre>// ❌ Mauvais
+users: User[] = [];
+private sub!: Subscription;
+
+ngOnInit() {
+  this.sub = this.service.getUsers().subscribe(
+    users => this.users = users
+  );
+}
+
+ngOnDestroy() {
+  this.sub.unsubscribe();
+}
+
+// ✅ Bon
+users$ = this.service.getUsers();
+
+// Template
+&lt;div *ngFor="let user of users$ | async"&gt;
+  {{ user.name }}
+&lt;/div&gt;</pre>
+
+                    <div class="success">
+                        <strong>✅ Best Practice :</strong> Utilisez l'async pipe partout où c'est possible.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q29 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q29 : Quand utiliser Subject vs BehaviorSubject ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Subject :</strong>
+                    <ul>
+                        <li>Pas de valeur initiale</li>
+                        <li>Nouveaux abonnés ne reçoivent que les futures valeurs</li>
+                        <li>Usage : Événements, notifications</li>
+                    </ul>
+
+                    <strong>BehaviorSubject :</strong>
+                    <ul>
+                        <li>Valeur initiale <strong>obligatoire</strong></li>
+                        <li>Nouveaux abonnés reçoivent immédiatement la dernière valeur</li>
+                        <li>Usage : État, données actuelles</li>
+                    </ul>
+
+                    <pre>// Subject - pour événements
+const clicked = new Subject&lt;void&gt;();
+clicked.next(); // Émission
+
+// BehaviorSubject - pour état
+const count = new BehaviorSubject(0);
+console.log(count.getValue()); // 0
+count.next(5);
+count.subscribe(val => console.log(val)); // 5 immédiatement !</pre>
+
+                    <div class="tip">
+                        <strong>💡 Règle :</strong> État actuel = BehaviorSubject. Événements = Subject.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q30 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q30 : Faut-il utiliser @Input() ou input() dans un nouveau projet ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p><strong>Réponse : input() (Signal)</strong></p>
+
+                    <strong>Raisons :</strong>
+                    <ul>
+                        <li>✅ Plus performant</li>
+                        <li>✅ Réactif nativement</li>
+                        <li>✅ S'intègre avec computed()</li>
+                        <li>✅ Futur d'Angular</li>
+                        <li>✅ Moins de code boilerplate</li>
+                    </ul>
+
+                    <pre>// ❌ Ancien (@Input)
+@Input() age!: number;
+estMajeur!: boolean;
+
+ngOnChanges() {
+  this.estMajeur = this.age >= 18;
+}
+
+// ✅ Nouveau (input Signal)
+age = input.required&lt;number&gt;();
+estMajeur = computed(() => this.age() >= 18);</pre>
+
+                    <div class="success">
+                        <strong>✅ Migration :</strong> Commencez par input() pour nouveaux composants, migrez progressivement les anciens.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px; text-align: center;">
+            <p style="color: #666; font-size: 14px;">Formation Angular 20 - Jour 2 ✅</p>
+            <p style="color: #999; font-size: 12px;">30 Questions essentielles pour maîtriser la réactivité et les composants avancés</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleQA(button) {
+            const content = button.nextElementSibling;
+            button.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+
+        function expandAll() {
+            const toggles = document.querySelectorAll('.qa-toggle');
+            toggles.forEach(toggle => {
+                toggle.classList.add('active');
+                toggle.nextElementSibling.classList.add('active');
+            });
+        }
+
+        function collapseAll() {
+            const toggles = document.querySelectorAll('.qa-toggle');
+            toggles.forEach(toggle => {
+                toggle.classList.remove('active');
+                toggle.nextElementSibling.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>

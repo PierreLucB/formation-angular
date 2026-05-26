@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular 20 - Jour 3 - Questions/Réponses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .qa-section {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .qa-section:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .qa-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .qa-toggle:hover {
+            background: #e9ecef;
+        }
+
+        .qa-toggle.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .qa-toggle::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            transform: rotate(0deg);
+        }
+
+        .qa-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .qa-content {
+            display: none;
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .qa-content.active {
+            display: block;
+            padding: 20px;
+            max-height: 2000px;
+        }
+
+        .answer {
+            line-height: 1.8;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .answer strong {
+            color: #667eea;
+        }
+
+        .answer ul, .answer ol {
+            margin: 15px 0 15px 20px;
+        }
+
+        .answer li {
+            margin: 8px 0;
+        }
+
+        .answer code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .answer pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            padding: 15px 20px;
+            background: #667eea;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .expand-all {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .expand-all button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .expand-all button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .tip {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Angular 20 - Jour 3</h1>
+            <p>Questions & Réponses - Routing & Requêtes HTTP</p>
+        </div>
+
+        <div class="expand-all">
+            <button onclick="expandAll()">📖 Afficher toutes les réponses</button>
+            <button onclick="collapseAll()" style="margin-left: 10px;">📁 Masquer toutes les réponses</button>
+        </div>
+
+        <!-- SECTION 1: ROUTING -->
+        <div class="section-title">🧭 PARTIE 1 : ROUTING ET NAVIGATION</div>
+
+        <!-- Q1 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q1 : Qu'est-ce que le routing en Angular et pourquoi l'utiliser ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Le routing permet de créer une <strong>SPA (Single Page Application)</strong> avec plusieurs "pages" sans recharger le navigateur.</p>
+
+                    <strong>Fonctionnement :</strong>
+                    <ul>
+                        <li>L'URL change (ex: /home → /produits)</li>
+                        <li>Angular affiche un composant différent</li>
+                        <li>Pas de rechargement de page</li>
+                        <li>Navigation instantanée</li>
+                    </ul>
+
+                    <strong>Avantages :</strong>
+                    <ul>
+                        <li>✅ Expérience utilisateur fluide</li>
+                        <li>✅ Pas de latence réseau</li>
+                        <li>✅ URLs partageables</li>
+                        <li>✅ Navigation avant/arrière du navigateur</li>
+                        <li>✅ SEO possible avec SSR</li>
+                    </ul>
+
+                    <pre>export const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'produits', component: ProduitsComponent }
+];
+
+// URL change : /home → /produits
+// Angular affiche ProduitsComponent</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q2 : Quelle est la différence entre routerLink et href ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>href (HTML standard) :</strong>
+                    <ul>
+                        <li>Recharge toute la page</li>
+                        <li>Perte de l'état de l'application</li>
+                        <li>Latence réseau</li>
+                        <li>❌ Ne pas utiliser dans Angular</li>
+                    </ul>
+
+                    <strong>routerLink (Angular) :</strong>
+                    <ul>
+                        <li>Navigation sans rechargement</li>
+                        <li>Conservation de l'état</li>
+                        <li>Navigation instantanée</li>
+                        <li>✅ Toujours utiliser pour navigation interne</li>
+                    </ul>
+
+                    <pre><!-- ❌ Mauvais - recharge la page -->
+&lt;a href="/produits"&gt;Produits&lt;/a&gt;
+
+<!-- ✅ Bon - navigation Angular -->
+&lt;a routerLink="/produits"&gt;Produits&lt;/a&gt;
+&lt;a [routerLink]="['/produit', id]"&gt;Détail&lt;/a&gt;</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Important :</strong> N'utilisez <code>href</code> que pour les liens externes (ex: <code>href="https://google.com"</code>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q3 : Comment passer des paramètres dans une route ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>1. Paramètres de route (dans l'URL) :</strong>
+                    <pre>// Routes
+{ path: 'produit/:id', component: ProduitDetailComponent }
+
+// Navigation
+&lt;a [routerLink]="['/produit', 123]"&gt;Produit 123&lt;/a&gt;
+this.router.navigate(['/produit', 123]);
+
+// URL résultante : /produit/123</pre>
+
+                    <strong>2. Query params (après ?) :</strong>
+                    <pre>// Navigation
+&lt;a [routerLink]="'/produits'" 
+   [queryParams]="{ category: 'electronics', sort: 'price' }"&gt;
+  Électronique
+&lt;/a&gt;
+
+this.router.navigate(['/produits'], {
+  queryParams: { category: 'electronics', sort: 'price' }
+});
+
+// URL résultante : /produits?category=electronics&sort=price</pre>
+
+                    <strong>3. Accéder aux paramètres :</strong>
+                    <pre>// Méthode 1 : Observable (si paramètres changent)
+route.paramMap.subscribe(params => {
+  const id = params.get('id');
+});
+
+route.queryParamMap.subscribe(params => {
+  const category = params.get('category');
+});
+
+// Méthode 2 : Snapshot (accès ponctuel)
+const id = route.snapshot.paramMap.get('id');
+const category = route.snapshot.queryParamMap.get('category');</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q4 : Qu'est-ce que le lazy loading de routes ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Le lazy loading charge les modules de route <strong>à la demande</strong> (quand l'utilisateur navigue vers la route).</p>
+
+                    <strong>Sans lazy loading :</strong>
+                    <ul>
+                        <li>Tout le code chargé au démarrage</li>
+                        <li>Bundle initial lourd</li>
+                        <li>Temps de chargement long</li>
+                    </ul>
+
+                    <strong>Avec lazy loading :</strong>
+                    <ul>
+                        <li>Code chargé à la demande</li>
+                        <li>Bundle initial léger</li>
+                        <li>Démarrage rapide</li>
+                    </ul>
+
+                    <pre>export const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  
+  // ✅ Lazy loading
+  {
+    path: 'admin',
+    loadChildren: () => import('./routes/admin.routes')
+                        .then(m => m.adminRoutes)
+  }
+];
+
+// admin.routes.ts
+export const adminRoutes: Routes = [
+  { path: '', component: AdminComponent },
+  { path: 'users', component: UsersComponent }
+];</pre>
+
+                    <div class="success">
+                        <strong>✅ Résultat :</strong> Le code de l'admin n'est chargé que quand on navigue vers /admin. Gain de 30-50% sur le bundle initial !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q5 : Qu'est-ce qu'un Guard et à quoi sert-il ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Un Guard <strong>protège l'accès aux routes</strong> (authentification, permissions, etc.).</p>
+
+                    <strong>Types de guards :</strong>
+                    <ul>
+                        <li><code>CanActivate</code> : Contrôler l'entrée d'une route</li>
+                        <li><code>CanDeactivate</code> : Confirmer avant de quitter</li>
+                        <li><code>CanMatch</code> : Charger ou non un module lazy</li>
+                        <li><code>Resolve</code> : Charger des données avant affichage</li>
+                    </ul>
+
+                    <strong>Exemple CanActivate :</strong>
+                    <pre>// Guard
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isAuthenticated()) {
+    return true; // Accès autorisé
+  }
+
+  router.navigate(['/login']);
+  return false; // Bloqué
+};
+
+// Routes
+export const routes: Routes = [
+  { 
+    path: 'admin', 
+    component: AdminComponent,
+    canActivate: [authGuard] // ✅ Protégé
+  },
+  { path: 'login', component: LoginComponent }
+];</pre>
+
+                    <strong>Exemple CanDeactivate :</strong>
+                    <pre>export const unsavedGuard: CanDeactivateFn&lt;any&gt; = (component) => {
+  if (component.hasUnsavedChanges()) {
+    return confirm('Modifications non sauvegardées. Quitter ?');
+  }
+  return true;
+};</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q6 : Quelle est la différence entre paramMap et snapshot ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>paramMap (Observable) :</strong>
+                    <ul>
+                        <li>Écoute les <strong>changements</strong> de paramètres</li>
+                        <li>Réactif</li>
+                        <li>Idéal si l'utilisateur peut changer l'ID sans quitter la page</li>
+                    </ul>
+
+                    <strong>snapshot (Accès ponctuel) :</strong>
+                    <ul>
+                        <li>Accès <strong>immédiat</strong> aux paramètres</li>
+                        <li>Non réactif</li>
+                        <li>Plus simple</li>
+                        <li>Idéal si les paramètres ne changent pas</li>
+                    </ul>
+
+                    <pre>// ✅ paramMap - si paramètres peuvent changer
+route.paramMap.subscribe(params => {
+  const id = params.get('id');
+  this.loadProduct(id);
+});
+
+// ✅ snapshot - accès ponctuel
+ngOnInit() {
+  const id = this.route.snapshot.paramMap.get('id');
+  this.loadProduct(id);
+}</pre>
+
+                    <div class="tip">
+                        <strong>💡 Règle :</strong> Utilisez paramMap si vous restez sur le même composant avec des params différents. Sinon, snapshot suffit.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q7 : Qu'est-ce que bindToComponentInputs (Angular 17+) ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Nouvelle API qui <strong>injecte automatiquement</strong> les paramètres de route comme <code>@Input()</code> dans le composant.</p>
+
+                    <strong>Avant (sans bindToComponentInputs) :</strong>
+                    <pre>// Route
+{ path: 'produit/:id', component: ProduitComponent }
+
+// Composant
+export class ProduitComponent {
+  private route = inject(ActivatedRoute);
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      // ...
+    });
+  }
+}</pre>
+
+                    <strong>Après (avec bindToComponentInputs) :</strong>
+                    <pre>// Route
+{ 
+  path: 'produit/:id', 
+  component: ProduitComponent,
+  bindToComponentInputs: true // ✅ Active l'injection
+}
+
+// Composant - beaucoup plus simple !
+export class ProduitComponent {
+  id = input&lt;string&gt;(''); // Paramètre injecté automatiquement
+  
+  // Pas besoin d'ActivatedRoute !
+}</pre>
+
+                    <div class="success">
+                        <strong>✅ Avantages :</strong> Plus simple, type-safe, moins de code, meilleure performance.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: HTTP -->
+        <div class="section-title">🌐 PARTIE 2 : REQUÊTES HTTP</div>
+
+        <!-- Q8 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q8 : Comment faire une requête GET avec HttpClient ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>1. Configurer HttpClient :</strong>
+                    <pre>// main.ts
+import { provideHttpClient } from '@angular/common/http';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient()
+  ]
+});</pre>
+
+                    <strong>2. Créer un service :</strong>
+                    <pre>@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+  private apiUrl = 'https://api.example.com/users';
+
+  getUsers(): Observable&lt;User[]&gt; {
+    return this.http.get&lt;User[]&gt;(this.apiUrl);
+  }
+
+  getUser(id: number): Observable&lt;User&gt; {
+    return this.http.get&lt;User&gt;(`${this.apiUrl}/${id}`);
+  }
+}</pre>
+
+                    <strong>3. Utiliser dans un composant :</strong>
+                    <pre>@Component({...})
+export class UsersComponent implements OnInit {
+  userService = inject(UserService);
+  users = signal&lt;User[]&gt;([]);
+  isLoading = signal(true);
+
+  ngOnInit() {
+    this.userService.getUsers().subscribe({
+      next: (data) => {
+        this.users.set(data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q9 : Quelles sont les méthodes HTTP principales ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Méthodes CRUD :</strong>
+
+                    <pre>// GET - Lire
+http.get&lt;User[]&gt;('/api/users')
+http.get&lt;User&gt;('/api/users/1')
+
+// POST - Créer
+http.post&lt;User&gt;('/api/users', {
+  nom: 'Jean',
+  email: 'jean@example.com'
+})
+
+// PUT - Remplacer complètement
+http.put&lt;User&gt;('/api/users/1', {
+  id: 1,
+  nom: 'Jean Dupont',
+  email: 'jean@example.com'
+})
+
+// PATCH - Modifier partiellement
+http.patch&lt;User&gt;('/api/users/1', {
+  nom: 'Jean Dupont' // Seulement le nom
+})
+
+// DELETE - Supprimer
+http.delete('/api/users/1')</pre>
+
+                    <strong>Avec options :</strong>
+                    <pre>http.get&lt;User[]&gt;('/api/users', {
+  params: { skip: '10', limit: '20' },
+  headers: { 'Authorization': 'Bearer token' }
+});
+
+// URL : /api/users?skip=10&limit=20</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q10 : Comment gérer les erreurs HTTP ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Avec catchError :</strong>
+                    <pre>import { catchError, throwError } from 'rxjs';
+
+getUsers(): Observable&lt;User[]&gt; {
+  return this.http.get&lt;User[]&gt;(this.apiUrl).pipe(
+    catchError(this.handleError)
+  );
+}
+
+private handleError(error: HttpErrorResponse) {
+  let message = 'Une erreur est survenue';
+
+  if (error.error instanceof ErrorEvent) {
+    // Erreur client (réseau, etc.)
+    message = `Erreur: ${error.error.message}`;
+  } else {
+    // Erreur serveur
+    message = `Code ${error.status}: ${error.message}`;
+  }
+
+  console.error(message);
+  return throwError(() => new Error(message));
+}</pre>
+
+                    <strong>Dans le composant :</strong>
+                    <pre>this.userService.getUsers().subscribe({
+  next: (data) => {
+    this.users.set(data);
+  },
+  error: (err) => {
+    this.errorMessage.set(err.message);
+    console.error(err);
+  }
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q11 : Qu'est-ce qu'un intercepteur HTTP ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Un intercepteur <strong>modifie globalement</strong> toutes les requêtes et/ou réponses HTTP.</p>
+
+                    <strong>Cas d'usage :</strong>
+                    <ul>
+                        <li>Ajouter un token d'authentification</li>
+                        <li>Logger les requêtes</li>
+                        <li>Gérer les erreurs globalement</li>
+                        <li>Ajouter des headers communs</li>
+                        <li>Afficher un loader</li>
+                    </ul>
+
+                    <strong>Exemple - Intercepteur d'authentification :</strong>
+                    <pre>import { HttpInterceptorFn } from '@angular/common/http';
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const token = authService.getToken();
+
+  // Ajouter le token à la requête
+  if (token) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  return next(req);
+};</pre>
+
+                    <strong>Enregistrer l'intercepteur :</strong>
+                    <pre>// main.ts
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    )
+  ]
+});</pre>
+
+                    <div class="tip">
+                        <strong>💡 Note :</strong> L'intercepteur s'applique automatiquement à TOUTES les requêtes HTTP de l'application.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q12 : Comment implémenter un retry automatique ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Retry simple :</strong>
+                    <pre>import { retry } from 'rxjs/operators';
+
+getUsers(): Observable&lt;User[]&gt; {
+  return this.http.get&lt;User[]&gt;(this.apiUrl).pipe(
+    retry(3), // Réessaie 3 fois en cas d'erreur
+    catchError(this.handleError)
+  );
+}</pre>
+
+                    <strong>Retry avec délai exponentiel :</strong>
+                    <pre>import { retry, timer } from 'rxjs';
+
+getUsers(): Observable&lt;User[]&gt; {
+  return this.http.get&lt;User[]&gt;(this.apiUrl).pipe(
+    retry({
+      count: 3,
+      delay: (error, retryCount) => {
+        console.log(`Tentative ${retryCount}`);
+        // Délai exponentiel : 2s, 4s, 8s
+        return timer(Math.pow(2, retryCount) * 1000);
+      }
+    }),
+    catchError(this.handleError)
+  );
+}</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Attention :</strong> N'utilisez retry que pour les erreurs temporaires (timeout, 503). Pas pour 404 ou 401 !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q13 : Qu'est-ce que l'API Resource (Angular 19+) ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Une nouvelle API déclarative pour simplifier les requêtes HTTP avec gestion automatique du loading et des erreurs.</p>
+
+                    <strong>Sans Resource (approche traditionnelle) :</strong>
+                    <pre>@Component({...})
+export class UsersComponent implements OnInit {
+  users = signal&lt;User[]&gt;([]);
+  isLoading = signal(true);
+  error = signal&lt;string | null&gt;(null);
+
+  ngOnInit() {
+    this.http.get&lt;User[]&gt;('/api/users').subscribe({
+      next: (data) => {
+        this.users.set(data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set(err.message);
+        this.isLoading.set(false);
+      }
+    });
+  }
+}</pre>
+
+                    <strong>Avec Resource (moderne) :</strong>
+                    <pre>import { resource } from '@angular/core';
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+
+  // ✅ Resource déclarative
+  users = resource({
+    loader: () => this.http.get&lt;User[]&gt;('/api/users')
+  });
+}
+
+// Composant - beaucoup plus simple !
+@Component({...})
+export class UsersComponent {
+  userService = inject(UserService);
+
+  // Accès direct aux données
+  template: `
+    @if (userService.users.isLoading()) {
+      &lt;p&gt;Chargement...&lt;/p&gt;
+    } @else if (userService.users.error()) {
+      &lt;p&gt;Erreur: {{ userService.users.error().message }}&lt;/p&gt;
+    } @else {
+      @for (user of userService.users.value(); track user.id) {
+        &lt;li&gt;{{ user.nom }}&lt;/li&gt;
+      }
+    }
+  `
+}</pre>
+
+                    <strong>Resource avec paramètre réactif :</strong>
+                    <pre>searchResults = resource({
+  request: () => ({ term: this.searchTerm() }),
+  loader: ({ request }) =>
+    this.http.get(`/api/search?q=${request.term}`)
+});
+
+// Quand searchTerm() change → rechargement automatique !</pre>
+
+                    <div class="success">
+                        <strong>✅ Avantages :</strong>
+                        <ul>
+                            <li>Moins de code boilerplate</li>
+                            <li>Gestion auto du loading/error</li>
+                            <li>Réactivité intégrée</li>
+                            <li>Plus déclaratif</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: AUTHENTIFICATION -->
+        <div class="section-title">🔐 PARTIE 3 : AUTHENTIFICATION</div>
+
+        <!-- Q14 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q14 : Comment implémenter l'authentification JWT ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>1. Service d'authentification :</strong>
+                    <pre>@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  
+  private tokenSignal = signal&lt;string | null&gt;(null);
+  
+  isAuthenticated = computed(() => !!this.tokenSignal());
+
+  constructor() {
+    // Charger le token depuis localStorage
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      this.tokenSignal.set(token);
+    }
+  }
+
+  login(email: string, password: string): Observable&lt;LoginResponse&gt; {
+    return this.http.post&lt;LoginResponse&gt;('/api/login', {
+      email,
+      password
+    }).pipe(
+      tap(response => {
+        this.tokenSignal.set(response.token);
+        localStorage.setItem('auth_token', response.token);
+      })
+    );
+  }
+
+  logout(): void {
+    this.tokenSignal.set(null);
+    localStorage.removeItem('auth_token');
+    this.router.navigate(['/login']);
+  }
+
+  getToken(): string | null {
+    return this.tokenSignal();
+  }
+}</pre>
+
+                    <strong>2. Intercepteur pour ajouter le token :</strong>
+                    <pre>export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const token = authService.getToken();
+
+  if (token) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  return next(req);
+};</pre>
+
+                    <strong>3. Guard pour protéger les routes :</strong>
+                    <pre>export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isAuthenticated()) {
+    return true;
+  }
+
+  router.navigate(['/login']);
+  return false;
+};
+
+// Routes
+{ 
+  path: 'admin', 
+  component: AdminComponent,
+  canActivate: [authGuard]
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q15 : Comment gérer l'expiration du token ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>1. Vérifier l'expiration du token :</strong>
+                    <pre>import { jwtDecode } from 'jwt-decode';
+
+isTokenExpired(token: string): boolean {
+  try {
+    const decoded: any = jwtDecode(token);
+    const now = Date.now() / 1000;
+    return decoded.exp < now;
+  } catch {
+    return true;
+  }
+}
+
+isAuthenticated(): boolean {
+  const token = this.getToken();
+  return token !== null && !this.isTokenExpired(token);
+}</pre>
+
+                    <strong>2. Intercepteur pour gérer 401 :</strong>
+                    <pre>export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        // Token expiré ou invalide
+        authService.logout();
+        router.navigate(['/login']);
+      }
+      return throwError(() => error);
+    })
+  );
+};</pre>
+
+                    <strong>3. Refresh token (optionnel) :</strong>
+                    <pre>refreshToken(): Observable&lt;TokenResponse&gt; {
+  const refreshToken = localStorage.getItem('refresh_token');
+  
+  return this.http.post&lt;TokenResponse&gt;('/api/refresh', {
+    refreshToken
+  }).pipe(
+    tap(response => {
+      this.tokenSignal.set(response.token);
+      localStorage.setItem('auth_token', response.token);
+    })
+  );
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: SSR -->
+        <div class="section-title">⚡ PARTIE 4 : SSR & PERFORMANCE</div>
+
+        <!-- Q16 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q16 : Qu'est-ce que le SSR (Server-Side Rendering) ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>Le SSR rend l'application <strong>sur le serveur</strong> avant de l'envoyer au navigateur.</p>
+
+                    <strong>Sans SSR (CSR - Client-Side Rendering) :</strong>
+                    <pre>1. Navigateur télécharge app.js
+2. Angular démarre
+3. Affiche le contenu
+→ Délai de 1-3 secondes (page blanche)</pre>
+
+                    <strong>Avec SSR :</strong>
+                    <pre>1. Serveur génère le HTML
+2. Navigateur affiche immédiatement
+3. Angular hydrate (rend interactif)
+→ Contenu visible en &lt;500ms</pre>
+
+                    <strong>Avantages :</strong>
+                    <ul>
+                        <li>✅ SEO optimal (Google voit le contenu)</li>
+                        <li>✅ Temps de premier affichage rapide</li>
+                        <li>✅ Meilleur sur mobile</li>
+                        <li>✅ Social media previews</li>
+                    </ul>
+
+                    <strong>Inconvénients :</strong>
+                    <ul>
+                        <li>❌ Infrastructure serveur nécessaire</li>
+                        <li>❌ Plus complexe</li>
+                        <li>❌ Coût serveur</li>
+                    </ul>
+
+                    <pre>// Activer SSR
+ng add @angular/ssr
+
+// main.server.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideServerRendering } from '@angular/platform-server';
+
+export default bootstrapApplication(AppComponent, {
+  providers: [
+    provideServerRendering()
+  ]
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q17 : Qu'est-ce que l'hydration progressive ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <p>L'hydration est le processus qui <strong>rend interactif</strong> le HTML généré par SSR.</p>
+
+                    <strong>Hydration classique :</strong>
+                    <ul>
+                        <li>Tout le HTML regeneré côté client</li>
+                        <li>Flash de contenu</li>
+                        <li>Gaspillage de ressources</li>
+                    </ul>
+
+                    <strong>Hydration progressive (Angular 16+) :</strong>
+                    <ul>
+                        <li>Réutilise le HTML du serveur</li>
+                        <li>Pas de flash</li>
+                        <li>Plus performant</li>
+                    </ul>
+
+                    <pre>// Activer l'hydration progressive
+import { provideClientHydration } from '@angular/platform-browser';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideClientHydration()
+  ]
+});</pre>
+
+                    <div class="success">
+                        <strong>✅ Résultat :</strong> Transition fluide du serveur au client, pas de re-render, meilleures performances.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: BONNES PRATIQUES -->
+        <div class="section-title">✨ PARTIE 5 : BONNES PRATIQUES</div>
+
+        <!-- Q18 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q18 : Comment organiser ses routes dans un projet ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Structure recommandée :</strong>
+                    <pre>src/app/
+├── app.routes.ts          # Routes principales
+├── routes/
+│   ├── admin.routes.ts    # Routes admin (lazy)
+│   ├── blog.routes.ts     # Routes blog (lazy)
+│   └── shop.routes.ts     # Routes shop (lazy)
+├── pages/
+│   ├── home/
+│   ├── about/
+│   └── not-found/
+└── guards/
+    ├── auth.guard.ts
+    └── unsaved.guard.ts</pre>
+
+                    <strong>Règles :</strong>
+                    <ul>
+                        <li>Routes publiques au root</li>
+                        <li>Sections complexes en lazy loading</li>
+                        <li>Guards dans un dossier séparé</li>
+                        <li>Wildcard en dernier</li>
+                    </ul>
+
+                    <pre>// app.routes.ts
+export const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  
+  // Lazy loading
+  {
+    path: 'admin',
+    loadChildren: () => import('./routes/admin.routes')
+                        .then(m => m.adminRoutes),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'blog',
+    loadChildren: () => import('./routes/blog.routes')
+                        .then(m => m.blogRoutes)
+  },
+  
+  // Catch-all en dernier
+  { path: '**', component: NotFoundComponent }
+];</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q19 : Quand utiliser Resource vs HttpClient classique ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Utilisez Resource quand :</strong>
+                    <ul>
+                        <li>✅ Requêtes simples GET</li>
+                        <li>✅ Besoin de loading/error automatique</li>
+                        <li>✅ Données réactives</li>
+                        <li>✅ Composant qui affiche directement</li>
+                    </ul>
+
+                    <strong>Utilisez HttpClient classique quand :</strong>
+                    <ul>
+                        <li>✅ POST/PUT/DELETE (mutations)</li>
+                        <li>✅ Logique complexe</li>
+                        <li>✅ Transformations de données</li>
+                        <li>✅ Chaining d'opérateurs RxJS</li>
+                    </ul>
+
+                    <pre>// ✅ Resource - parfait pour afficher des données
+users = resource({
+  loader: () => this.http.get&lt;User[]&gt;('/api/users')
+});
+
+// ✅ HttpClient - parfait pour les mutations
+createUser(user: User): Observable&lt;User&gt; {
+  return this.http.post&lt;User&gt;('/api/users', user).pipe(
+    tap(() => this.users.reload()),
+    catchError(this.handleError)
+  );
+}</pre>
+
+                    <div class="tip">
+                        <strong>💡 Conseil :</strong> Combinez les deux ! Resource pour lire, HttpClient pour modifier.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q20 : Comment tester un service avec HttpClient ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Avec HttpTestingController :</strong>
+                    <pre>import { TestBed } from '@angular/core/testing';
+import { 
+  provideHttpClient 
+} from '@angular/common/http';
+import { 
+  HttpTestingController, 
+  provideHttpClientTesting 
+} from '@angular/common/http/testing';
+
+describe('UserService', () => {
+  let service: UserService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        UserService,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+    });
+
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify(); // Vérifie qu'aucune requête non attendue
+  });
+
+  it('doit récupérer les utilisateurs', () => {
+    const mockUsers = [
+      { id: 1, nom: 'Jean' },
+      { id: 2, nom: 'Marie' }
+    ];
+
+    service.getUsers().subscribe(users => {
+      expect(users.length).toBe(2);
+      expect(users).toEqual(mockUsers);
+    });
+
+    // Intercepter la requête
+    const req = httpMock.expectOne('/api/users');
+    expect(req.request.method).toBe('GET');
+
+    // Répondre avec les données mock
+    req.flush(mockUsers);
+  });
+
+  it('doit gérer les erreurs', () => {
+    service.getUsers().subscribe({
+      next: () => fail('devrait échouer'),
+      error: (error) => {
+        expect(error.message).toContain('500');
+      }
+    });
+
+    const req = httpMock.expectOne('/api/users');
+    req.flush('Erreur serveur', { 
+      status: 500, 
+      statusText: 'Server Error' 
+    });
+  });
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px; text-align: center;">
+            <p style="color: #666; font-size: 14px;">Formation Angular 20 - Jour 3 ✅</p>
+            <p style="color: #999; font-size: 12px;">20 Questions essentielles pour maîtriser le routing et les requêtes HTTP</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleQA(button) {
+            const content = button.nextElementSibling;
+            button.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+
+        function expandAll() {
+            const toggles = document.querySelectorAll('.qa-toggle');
+            toggles.forEach(toggle => {
+                toggle.classList.add('active');
+                toggle.nextElementSibling.classList.add('active');
+            });
+        }
+
+        function collapseAll() {
+            const toggles = document.querySelectorAll('.qa-toggle');
+            toggles.forEach(toggle => {
+                toggle.classList.remove('active');
+                toggle.nextElementSibling.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>

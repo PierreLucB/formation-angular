@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular 20 - Jour 4 - Questions/Réponses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .qa-section {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .qa-section:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .qa-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .qa-toggle:hover {
+            background: #e9ecef;
+        }
+
+        .qa-toggle.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .qa-toggle::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            transform: rotate(0deg);
+        }
+
+        .qa-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .qa-content {
+            display: none;
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .qa-content.active {
+            display: block;
+            padding: 20px;
+            max-height: 2000px;
+        }
+
+        .answer {
+            line-height: 1.8;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .answer strong {
+            color: #667eea;
+        }
+
+        .answer ul, .answer ol {
+            margin: 15px 0 15px 20px;
+        }
+
+        .answer li {
+            margin: 8px 0;
+        }
+
+        .answer code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .answer pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            padding: 15px 20px;
+            background: #667eea;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .expand-all {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .expand-all button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .expand-all button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .tip {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Angular 20 - Jour 4</h1>
+            <p>Questions & Réponses - Tests & Production</p>
+        </div>
+
+        <div class="expand-all">
+            <button onclick="expandAll()">📖 Afficher toutes les réponses</button>
+            <button onclick="collapseAll()" style="margin-left: 10px;">📁 Masquer toutes les réponses</button>
+        </div>
+
+        <!-- SECTION 1: TESTS -->
+        <div class="section-title">📋 PARTIE 1 : TESTS ET QUALITÉ</div>
+
+        <!-- Q1 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q1 : Quelle est la différence entre Karma et Vitest ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Karma (Legacy) :</strong>
+                    <ul>
+                        <li>Lanceur de tests traditionnel d'Angular</li>
+                        <li>Démarre un serveur + navigateur Chrome</li>
+                        <li>Temps d'exécution : 5-10 secondes</li>
+                        <li>Stable et bien documenté</li>
+                    </ul>
+
+                    <strong>Vitest (Moderne) :</strong>
+                    <ul>
+                        <li>Lanceur moderne basé sur Vite</li>
+                        <li>Exécution ultra-rapide (1-2 secondes)</li>
+                        <li>Support HMR (rechargement en direct)</li>
+                        <li>Interface graphique incluse</li>
+                        <li>Recommandé pour Angular 17+</li>
+                    </ul>
+
+                    <div class="success">
+                        <strong>✅ À retenir :</strong> Vitest est plus rapide et moderne. Utiliser Vitest pour les nouveaux projets Angular 17+.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q2 : Comment tester un service avec HttpClient ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Utiliser provideHttpClientTesting() :</strong>
+                    <pre>TestBed.configureTestingModule({
+  providers: [
+    TodoService,
+    provideHttpClient(),
+    provideHttpClientTesting()
+  ]
+});
+
+const httpMock = TestBed.inject(HttpTestingController);
+const req = httpMock.expectOne('/api/todos');
+req.flush(mockData);
+httpMock.verify();</pre>
+
+                    <strong>Étapes :</strong>
+                    <ol>
+                        <li>Configurer avec <code>provideHttpClientTesting()</code></li>
+                        <li>Injecter <code>HttpTestingController</code></li>
+                        <li>Utiliser <code>expectOne()</code> pour capturer la requête</li>
+                        <li>Utiliser <code>flush()</code> pour répondre</li>
+                        <li>Utiliser <code>verify()</code> pour vérifier pas de requête orpheline</li>
+                    </ol>
+
+                    <div class="warning">
+                        <strong>⚠️ Important :</strong> Utilisez <code>provideHttpClientTesting()</code> (moderne) et non <code>HttpClientTestingModule</code> (deprecated).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q3 : Comment tester les événements d'un composant ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Espionner et vérifier l'événement :</strong>
+                    <pre>// Espionner l'événement
+spyOn(component.bascule, 'emit');
+
+// Déclencher l'action
+button.click();
+
+// Vérifier
+expect(component.bascule.emit).toHaveBeenCalled();
+expect(component.bascule.emit).toHaveBeenCalledWith(42);</pre>
+
+                    <strong>Vérifications possibles :</strong>
+                    <ul>
+                        <li><code>toHaveBeenCalled()</code> : a été appelé au moins une fois</li>
+                        <li><code>toHaveBeenCalledTimes(n)</code> : a été appelé exactement n fois</li>
+                        <li><code>toHaveBeenCalledWith(arg)</code> : a été appelé avec cet argument</li>
+                    </ul>
+
+                    <div class="tip">
+                        <strong>💡 Conseil :</strong> Toujours tester les @Output() avec des spies pour vérifier que les événements sont émis.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q4 : Comment tester du code asynchrone ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Utiliser fakeAsync + tick :</strong>
+                    <pre>it('doit gérer les délais', fakeAsync(() => {
+  let result = '';
+  setTimeout(() => {
+    result = 'fait';
+  }, 1000);
+
+  tick(1000); // Avancer le temps de 1000ms
+  expect(result).toBe('fait');
+}));</pre>
+
+                    <strong>Autres approches :</strong>
+                    <ul>
+                        <li><code>fakeAsync(() => { tick(500); })</code> : avancer le temps</li>
+                        <li><code>flush()</code> : exécuter tous les timers</li>
+                        <li><code>done</code> callback : (old style) appeler done() quand prêt</li>
+                    </ul>
+
+                    <div class="success">
+                        <strong>✅ Best Practice :</strong> Utiliser <code>fakeAsync + tick</code> pour un code clair et prévisible.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q5 : Quelle couverture de code faut-il viser ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Objectifs minimums :</strong>
+                    <ul>
+                        <li><strong>Statements :</strong> ≥ 80% de lignes exécutées</li>
+                        <li><strong>Branches :</strong> ≥ 75% de chemins de code</li>
+                        <li><strong>Functions :</strong> ≥ 80% de fonctions testées</li>
+                        <li><strong>Lines :</strong> ≥ 80% de lignes testées</li>
+                    </ul>
+
+                    <strong>Générer le rapport :</strong>
+                    <pre>ng test --code-coverage --no-watch
+# Ouvrir coverage/index.html</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Important :</strong> 80% est un minimum. Plus la couverture, mieux c'est, mais pas d'obsession - viser qualité plutôt que quantité.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: PRODUCTION -->
+        <div class="section-title">🚀 PARTIE 2 : DÉPLOIEMENT & PRODUCTION</div>
+
+        <!-- Q6 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q6 : Comment optimiser le bundle Angular ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Optimisations automatiques (build production) :</strong>
+                    <ul>
+                        <li><strong>AOT :</strong> Compilation Ahead-Of-Time</li>
+                        <li><strong>Tree-shaking :</strong> Supprime code inutilisé</li>
+                        <li><strong>Minification :</strong> Compresse le code</li>
+                        <li><strong>Code splitting :</strong> Lazy loading</li>
+                    </ul>
+
+                    <strong>Résultat typique :</strong>
+                    <ul>
+                        <li>Avant production : ~500 KB</li>
+                        <li>Après production : ~100-150 KB (gzippé)</li>
+                        <li>Compression : 70-80% du bundle initial</li>
+                    </ul>
+
+                    <pre>ng build --configuration production</pre>
+
+                    <div class="tip">
+                        <strong>💡 Analyser :</strong> Utilisez <code>webpack-bundle-analyzer</code> pour visualiser le bundle.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q7 : Qu'est-ce que les Core Web Vitals ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Trois métriques critiques :</strong>
+                    <ul>
+                        <li><strong>LCP (Largest Contentful Paint) :</strong> &lt; 2.5s - affichage du contenu principal</li>
+                        <li><strong>INP (Interaction to Next Paint) :</strong> &lt; 200ms - réactivité (remplace FID)</li>
+                        <li><strong>CLS (Cumulative Layout Shift) :</strong> &lt; 0.1 - stabilité visuelle</li>
+                    </ul>
+
+                    <strong>Tester avec Lighthouse :</strong>
+                    <pre>DevTools → Lighthouse → Generate report
+# Vérifier Performance ≥ 90</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Critique :</strong> Les Core Web Vitals impactent le classement SEO. Ne pas négliger !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q8 : Comment déployer une SPA Angular ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Options principales :</strong>
+                    <ul>
+                        <li><strong>Netlify :</strong> Gratuit, simple, recommandé ⭐</li>
+                        <li><strong>GitHub Pages :</strong> Gratuit, mais limité</li>
+                        <li><strong>Vercel :</strong> Gratuit, similaire à Netlify</li>
+                        <li><strong>Nginx (VPS) :</strong> Complet, mais plus complexe</li>
+                        <li><strong>Docker :</strong> Containerization</li>
+                    </ul>
+
+                    <strong>Déploiement Netlify (le plus simple) :</strong>
+                    <pre>ng build --configuration production
+npm install -g netlify-cli
+netlify deploy --prod --dir dist
+# URL : https://votre-app.netlify.app</pre>
+
+                    <div class="success">
+                        <strong>✅ Recommandé :</strong> Netlify pour 90% des cas. C'est simple, rapide et gratuit.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q9 : Qu'est-ce que l'accessibilité WCAG 2.1 ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Quatre principes :</strong>
+                    <ol>
+                        <li><strong>Perceptible :</strong> Visible, audible (images alt, couleurs, contraste)</li>
+                        <li><strong>Opérable :</strong> Clavier, navigation (tabulation, focus visible)</li>
+                        <li><strong>Compréhensible :</strong> Clair, prévisible (structure hiérarchique)</li>
+                        <li><strong>Robuste :</strong> Compatible (HTML valide, ARIA correcte)</li>
+                    </ol>
+
+                    <strong>Vérifications essentielles :</strong>
+                    <ul>
+                        <li>Alt text sur les images</li>
+                        <li>Navigation au clavier complète</li>
+                        <li>ARIA labels sur les inputs</li>
+                        <li>Contraste texte/fond ≥ 4.5:1</li>
+                        <li>Lecteurs d'écran testés</li>
+                    </ul>
+
+                    <pre>Lighthouse → Accessibility ≥ 90</pre>
+
+                    <div class="warning">
+                        <strong>⚠️ Légal :</strong> WCAG 2.1 est obligatoire dans beaucoup de pays/secteurs. Pas optional !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="qa-section">
+            <button class="qa-toggle" onclick="toggleQA(this)">
+                <span>Q10 : Comment configurer GitHub Actions pour CI/CD ?</span>
+            </button>
+            <div class="qa-content">
+                <div class="answer">
+                    <strong>Fichier .github/workflows/deploy.yml :</strong>
+                    <pre>name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm run test -- --no-watch --code-coverage
+      - run: npm run build -- --configuration production
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: './dist'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}</pre>
+
+                    <strong>Flux :</strong>
+                    <ol>
+                        <li>Push code sur main</li>
+                        <li>Tests automatiques</li>
+                        <li>Build production</li>
+                        <li>Déploiement Netlify</li>
+                    </ol>
+
+                    <div class="success">
+                        <strong>✅ Avantage :</strong> Zéro manipulation manuelle. Déploiement automatique à chaque commit.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px; text-align: center;">
+            <p style="color: #666; font-size: 14px;">Formation Angular 20 - Jour 4 ✅</p>
+            <p style="color: #999; font-size: 12px;">Créé pour faciliter l'apprentissage avec des Q&A interactives</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleQA(button) {
+            const content = button.nextElementSibling;
+            button.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+
+        function expandAll() {
+            const toggles = document.querySelectorAll('.qa-toggle');
+            toggles.forEach(toggle => {
+                toggle.classList.add('active');
+                toggle.nextElementSibling.classList.add('active');
+            });
+        }
+
+        function collapseAll() {
+            const toggles = document.querySelectorAll('.qa-toggle');
+            toggles.forEach(toggle => {
+                toggle.classList.remove('active');
+                toggle.nextElementSibling.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>
