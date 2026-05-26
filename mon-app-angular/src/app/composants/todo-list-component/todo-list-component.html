@@ -1,0 +1,21 @@
+<h1>Liste des todos :</h1>
+<section>
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Terminé?</th>
+            <th>Date de création</th>
+        </thead>
+        <tbody>
+            @for(todo of todoList; track todo.id){
+            <tr>
+                <td>{{ todo.id }}</td>
+                <td>{{ todo.titre }}</td>
+                <td><input type="checkbox" [checked]="todo.termine"></td>
+                <td>{{ todo.dateCreation | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</section>
