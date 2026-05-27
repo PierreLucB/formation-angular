@@ -14,9 +14,9 @@
             <tr>
                 <td>{{ todo.id }}</td>
                 <td>{{ todo.titre }}</td>
-                <td><input type="checkbox" [(ngModel)]="todo.termine" (change)="modifierTodo(todo)"></td>
+                <td><mat-checkbox [(ngModel)]="todo.termine" (change)="modifierTodo(todo)"></mat-checkbox></td>
                 <td>{{ todo.dateCreation | date: 'dd/MM/yyyy' }}</td>
-                <td><button type="button" (click)="supprimerTodo(todo)">Supprimer</button></td>
+                <td><button matButton type="button" (click)="supprimerTodo(todo)">Supprimer</button></td>
             </tr>
             }
             @empty {

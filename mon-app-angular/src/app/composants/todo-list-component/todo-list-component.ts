@@ -1,13 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { Todo } from '../../models/todo';
 import { TodoService } from '../../services/todo-service';
 import { CreateUpdateTodoComponent } from "../create-update-todo-component/create-update-todo-component";
 
 @Component({
   selector: 'app-todo-list-component',
-  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent],
+  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent, MatButton, MatCheckbox],
   templateUrl: './todo-list-component.html',
   styleUrl: './todo-list-component.css',
 })

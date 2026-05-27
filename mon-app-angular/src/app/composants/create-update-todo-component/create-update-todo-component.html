@@ -1,5 +1,8 @@
-<form class="flex flex-row gap-4 items-start" (ngSubmit)="ajouterTodo()">
-    <label for="nouveau-todo">Ajouter un todo</label>
-    <input name="nom" placeholder="Nom du todo..." id="nouveau-todo" type="text" [(ngModel)]="nouveauTodo">
-    <button [disabled]="nouveauTodo.length === 0">Ajouter</button>
+<form class="flex flex-col items-start" (ngSubmit)="ajouterTodo()">
+    <mat-form-field>
+        <mat-label>Ajouter un todo</mat-label>
+        <input matInput name="nom" placeholder="Nom du todo..." type="text" [(ngModel)]="nouveauTodo">
+    </mat-form-field>
+
+    <button matButton="filled" [disabled]="nouveauTodo.length === 0">Ajouter</button>
 </form>
