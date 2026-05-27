@@ -14,7 +14,7 @@ export class TodoService {
   }
 
   ajouterTodo(nom: string): void {
-    const todosTries = this._todos.sort((a, b) => a.id - b.id);
+    const todosTries = this._todos.sort((a, b) => b.id - a.id);
 
     const todo: Todo = {
       dateCreation: new Date(),

@@ -1,1 +1,5 @@
-<p>create-update-todo-component works!</p>
+<form class="flex flex-row gap-4 items-start" (ngSubmit)="ajouterTodo()">
+    <label for="nouveau-todo">Ajouter un todo</label>
+    <input name="nom" placeholder="Nom du todo..." id="nouveau-todo" type="text" [(ngModel)]="nouveauTodo">
+    <button [disabled]="nouveauTodo.length === 0">Ajouter</button>
+</form>
