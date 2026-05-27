@@ -1,20 +1,21 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { Todo } from '../models/todo';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  private _todos: Todo[] = [
-    { id:1, dateCreation: new Date(), termine: true, titre : 'Tâche pour commencer'}
-  ];
+  private _todos: WritableSignal<Todo[]> = signal([]);
 
-  getTodoList(): Todo[] {
+  readonly todosTermines = computed(() => this._todos().filter(t => t.termine).length);
+  readonly nombreTodos = computed(() => this._todos().length);
+
+  getTodoList(): Signal<Todo[]> {
     return this._todos;
   }
 
   ajouterTodo(nom: string): void {
-    const todosTries = this._todos.sort((a, b) => b.id - a.id);
+    const todosTries = this._todos().sort((a, b) => b.id - a.id);
 
     const todo: Todo = {
       dateCreation: new Date(),
@@ -23,6 +24,17 @@ export class TodoService {
       titre: nom
     };
 
-    this._todos.push(todo);
+    this._todos.update(current => [...current, todo]);
+  }
+
+  modifierTodo(todo: Todo): void {
+    this._todos.update(value => [
+      ...value.filter(v => v.id !== todo.id),
+      todo
+    ]);
+  }
+
+  supprimerTodo(todo: Todo): void {
+    this._todos.update(value => value.filter(v => v.id !== todo.id));
   }
 }

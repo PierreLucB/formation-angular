@@ -1,4 +1,4 @@
-<h1>Liste des todos :</h1>
+<h1>Liste des todos : ({{ todosTermines()}}/{{nombreTodos() }} terminés)</h1>
 <app-create-update-todo-component></app-create-update-todo-component>
 <section>
     <table>
@@ -7,15 +7,20 @@
             <th>Nom</th>
             <th>Terminé?</th>
             <th>Date de création</th>
+            <th></th>
         </thead>
         <tbody>
-            @for(todo of todoList; track todo.id){
+            @for(todo of todoList(); track todo.id){
             <tr>
                 <td>{{ todo.id }}</td>
                 <td>{{ todo.titre }}</td>
-                <td><input type="checkbox" [(ngModel)]="todo.termine"></td>
+                <td><input type="checkbox" [(ngModel)]="todo.termine" (change)="modifierTodo(todo)"></td>
                 <td>{{ todo.dateCreation | date: 'dd/MM/yyyy' }}</td>
+                <td><button type="button" (click)="supprimerTodo(todo)">Supprimer</button></td>
             </tr>
+            }
+            @empty {
+            Aucun todo disponible.
             }
         </tbody>
     </table>
