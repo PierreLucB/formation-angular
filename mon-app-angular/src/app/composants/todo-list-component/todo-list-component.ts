@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, DatePipe, JsonPipe, NgClass } from '@angular/common';
 import { Component, effect, inject, Signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -8,10 +8,12 @@ import { Observable } from 'rxjs';
 import { Todo } from '../../models/todo';
 import { TodoService } from '../../services/todo-service';
 import { CreateUpdateTodoComponent } from "../create-update-todo-component/create-update-todo-component";
+import { BarrerTexteDirective } from '../../directives/barrer-texte-directive';
+import { MaxLengthPipe } from "../../pipes/max-length-pipe";
 
 @Component({
   selector: 'app-todo-list-component',
-  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent, MatButton, MatCheckbox, AsyncPipe, JsonPipe],
+  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent, MatButton, MatCheckbox, AsyncPipe, JsonPipe, BarrerTexteDirective, NgClass, MaxLengthPipe],
   templateUrl: './todo-list-component.html',
   styleUrl: './todo-list-component.css'
 })

@@ -1,13 +1,13 @@
-import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
-import { TodoListComponent } from './composants/todo-list-component/todo-list-component';
-import './models/utilisateur';
+import { Component, signal } from '@angular/core';
 import { from, map, Observable, of, take } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 import { SearchComponent } from "./composants/search-component/search-component";
+import './models/utilisateur';
+import { TodoListComponent } from "./composants/todo-list-component/todo-list-component";
+import { CardComponent } from "./composants/card-component/card-component";
 
 @Component({
   selector: 'app-root',
-  imports: [TodoListComponent, AsyncPipe, SearchComponent],
+  imports: [SearchComponent, TodoListComponent, CardComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

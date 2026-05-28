@@ -1,9 +1,5 @@
 <h1>Liste des todos : ({{ todosTermines()}}/{{nombreTodos() }} terminés)</h1>
 <app-create-update-todo-component></app-create-update-todo-component>
-<app-create-update-todo-component></app-create-update-todo-component>
-<app-create-update-todo-component></app-create-update-todo-component>
-<app-create-update-todo-component></app-create-update-todo-component>
-<app-create-update-todo-component></app-create-update-todo-component>
 <section>
     <table>
         <thead>
@@ -15,9 +11,9 @@
         </thead>
         <tbody>
             @for(todo of todoList(); track todo.id){
-            <tr>
+            <tr barrerTexte [condition]="todo.termine">
                 <td>{{ todo.id }}</td>
-                <td>{{ todo.titre }}</td>
+                <td>{{ todo.titre | maxLength: 5 }}</td>
                 <td><mat-checkbox [(ngModel)]="todo.termine" (change)="modifierTodo(todo)"></mat-checkbox></td>
                 <td>{{ todo.dateCreation | date: 'dd/MM/yyyy' }}</td>
                 <td><button matButton type="button" (click)="supprimerTodo(todo)">Supprimer</button></td>
