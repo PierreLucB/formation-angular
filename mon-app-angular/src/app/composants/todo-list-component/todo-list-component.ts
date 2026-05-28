@@ -10,10 +10,12 @@ import { TodoService } from '../../services/todo-service';
 import { CreateUpdateTodoComponent } from "../create-update-todo-component/create-update-todo-component";
 import { BarrerTexteDirective } from '../../directives/barrer-texte-directive';
 import { MaxLengthPipe } from "../../pipes/max-length-pipe";
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { RouterLink, RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-todo-list-component',
-  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent, MatButton, MatCheckbox, AsyncPipe, JsonPipe, BarrerTexteDirective, NgClass, MaxLengthPipe],
+  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent, MatButton, MatCheckbox, AsyncPipe, JsonPipe, BarrerTexteDirective, MatTableModule, MaxLengthPipe, RouterLink, RouterOutlet],
   templateUrl: './todo-list-component.html',
   styleUrl: './todo-list-component.css'
 })

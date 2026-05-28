@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { TodoService } from '../../services/todo-service';
 import { MatInput, MatFormField, MatLabel } from '@angular/material/input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-update-todo-component',
@@ -12,12 +13,13 @@ import { MatInput, MatFormField, MatLabel } from '@angular/material/input';
 })
 export class CreateUpdateTodoComponent {
   private readonly todoService = inject(TodoService);
+  private readonly router = inject(Router);
 
   nouveauTodo: string = '';
 
   ajouterTodo(): void {
     this.todoService.ajouterTodo(this.nouveauTodo);
 
-    this.nouveauTodo = '';
+    this.router.navigate(['/todo-list']);
   }
 }

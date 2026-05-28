@@ -1,13 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { from, map, Observable, of, take } from 'rxjs';
-import { SearchComponent } from "./composants/search-component/search-component";
 import './models/utilisateur';
-import { TodoListComponent } from "./composants/todo-list-component/todo-list-component";
-import { CardComponent } from "./composants/card-component/card-component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [SearchComponent, TodoListComponent, CardComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

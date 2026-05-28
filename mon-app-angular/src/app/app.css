@@ -1,4 +1,5 @@
 :host{
-    margin:1rem;
+    margin:0 auto;
     display: block;
+    max-width: 1024px;
 }

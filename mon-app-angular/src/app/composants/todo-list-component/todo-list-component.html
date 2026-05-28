@@ -1,33 +1,27 @@
 <h1>Liste des todos : ({{ todosTermines()}}/{{nombreTodos() }} terminés)</h1>
-<app-create-update-todo-component></app-create-update-todo-component>
+<a matButton [routerLink]="['/todo-list/nouveau']">Ajouter un todo</a>
 <section>
-    <table>
-        <thead>
-            <th>Id</th>
-            <th>Nom</th>
-            <th>Terminé?</th>
-            <th>Date de création</th>
-            <th></th>
-        </thead>
-        <tbody>
-            @for(todo of todoList(); track todo.id){
-            <tr barrerTexte [condition]="todo.termine">
-                <td>{{ todo.id }}</td>
-                <td>{{ todo.titre | maxLength: 5 }}</td>
-                <td><mat-checkbox [(ngModel)]="todo.termine" (change)="modifierTodo(todo)"></mat-checkbox></td>
-                <td>{{ todo.dateCreation | date: 'dd/MM/yyyy' }}</td>
-                <td><button matButton type="button" (click)="supprimerTodo(todo)">Supprimer</button></td>
-            </tr>
-            }
-            @empty {
-            Aucun todo disponible.
-            }
-        </tbody>
+    <table mat-table [dataSource]="todoList()" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id</th>
+            <td mat-cell *matCellDef="let todo"> {{todo.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef> Nom</th>
+            <td mat-cell *matCellDef="let todo"> {{todo.titre | maxLength:20}} </td>
+        </ng-container>
+        <ng-container matColumnDef="termine">
+            <th mat-header-cell *matHeaderCellDef> Terminé ?</th>
+            <td mat-cell *matCellDef="let todo"> <mat-checkbox [(ngModel)]="todo.termine"
+                    (change)="modifierTodo(todo)"></mat-checkbox> </td>
+        </ng-container>
+        <ng-container matColumnDef="commands">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let todo"> <button matButton type="button"
+                    (click)="supprimerTodo(todo)">Supprimer</button> </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['id', 'nom', 'termine', 'commands']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['id', 'nom', 'termine', 'commands'];"></tr>
     </table>
 </section>
-
-Résultat en Observable et en json : <br/>
-{{ todoList$ | async | json }} <br>
-
-Autre résultat en Signal : <br>
-{{ todoList2() | json }}
