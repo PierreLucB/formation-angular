@@ -2,7 +2,7 @@ import { computed, Injectable, signal, Signal, WritableSignal } from '@angular/c
 import { Todo } from '../models/todo';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TodoService {
   private _todos: WritableSignal<Todo[]> = signal([]);
@@ -10,6 +10,9 @@ export class TodoService {
   readonly todosTermines = computed(() => this._todos().filter(t => t.termine).length);
   readonly nombreTodos = computed(() => this._todos().length);
 
+  constructor() {
+    console.log('nouvelle instance')
+  }
   getTodoList(): Signal<Todo[]> {
     return this._todos;
   }

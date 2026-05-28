@@ -1,5 +1,9 @@
 <h1>Liste des todos : ({{ todosTermines()}}/{{nombreTodos() }} terminés)</h1>
 <app-create-update-todo-component></app-create-update-todo-component>
+<app-create-update-todo-component></app-create-update-todo-component>
+<app-create-update-todo-component></app-create-update-todo-component>
+<app-create-update-todo-component></app-create-update-todo-component>
+<app-create-update-todo-component></app-create-update-todo-component>
 <section>
     <table>
         <thead>
@@ -25,3 +29,9 @@
         </tbody>
     </table>
 </section>
+
+Résultat en Observable et en json : <br/>
+{{ todoList$ | async | json }} <br>
+
+Autre résultat en Signal : <br>
+{{ todoList2() | json }}

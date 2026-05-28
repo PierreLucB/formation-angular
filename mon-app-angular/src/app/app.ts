@@ -1,37 +1,39 @@
 import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
 import { TodoListComponent } from './composants/todo-list-component/todo-list-component';
 import './models/utilisateur';
+import { from, map, Observable, of, take } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { SearchComponent } from "./composants/search-component/search-component";
 
 @Component({
   selector: 'app-root',
-  imports: [TodoListComponent],
+  imports: [TodoListComponent, AsyncPipe, SearchComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('mon-app-angular');
 
-  cpt = signal(10);
+  toto$ = of('toto');
 
-  messageDerive: Signal<string> = computed(() => {
-    const c: number = this.cpt();
+  constructor() {
+    const data$: Observable<number> = from([1, 2, 3, 4, 5]);
 
-    if (c > 30) {
-      return 'Il fait chaud';
-    }
+    data$.subscribe(v => console.log("valeur reçue : " + v))
 
-    if (c > 20) {
-      return "On est bien"
-    }
 
-    return "Il fait froid"
-  })
+    const d$: Observable<number> = data$.pipe(
+      map(x => x * 2),
+      map(x => x / 4),
+      take(2)
+    );
 
-  incrementer(): void {
-    this.cpt.update(currentValue => ++currentValue);
-  }
+    d$.subscribe(v => console.log("valeur reçue : " + v));
 
-  reset(): void {
-    this.cpt.set(0);
+    const data2$: Observable<number[]> = of([1, 2, 3, 4, 5]);
+    data2$.subscribe(v => console.log("Valeur 2 : " + v))
+
+    const data3$: Observable<string> = from("chainedecaractere");
+    data3$.subscribe(v => console.log("Charactére reçu : " + v))
   }
 }
