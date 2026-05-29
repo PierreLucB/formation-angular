@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { Todo } from '../models/todo';
+import { apiUrlToken } from '../tokens';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoApiService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://jsonplaceholder.typicode.com/todos';
+  private apiUrl = inject(apiUrlToken) + '/todos';
 
   private todosSubject = new BehaviorSubject<Todo[]>([]);
   todos$ = this.todosSubject.asObservable();

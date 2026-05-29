@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { from, map, Observable, of, take } from 'rxjs';
 import './models/utilisateur';
 import { RouterOutlet } from '@angular/router';
+import { TodoApiService } from './services/todo-api-service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,11 @@ export class App {
 
   toto$ = of('toto');
 
+  todos = toSignal(inject(TodoApiService).getTodos());
+
   constructor() {
+    console.log('todos=', this.todos());
+
     const data$: Observable<number> = from([1, 2, 3, 4, 5]);
 
     data$.subscribe(v => console.log("valeur reçue : " + v))
