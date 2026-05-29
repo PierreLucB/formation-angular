@@ -5,7 +5,14 @@ import { Todo } from '../models/todo';
   providedIn: 'root'
 })
 export class TodoService {
-  private _todos: WritableSignal<Todo[]> = signal([]);
+  private _todos: WritableSignal<Todo[]> = signal([
+    {
+      dateCreation: new Date(),
+      id: 1,
+      termine: false,
+      titre: 'Todo numéro 1'      
+    } satisfies Todo
+  ]);
 
   readonly todosTermines = computed(() => this._todos().filter(t => t.termine).length);
   readonly nombreTodos = computed(() => this._todos().length);

@@ -1,0 +1,22 @@
+<h1 class="text-xl">Posts reçus :</h1>
+<div class="flex flex-col gap-4">
+    @for (post of posts$ | async; track post.id) {
+    <app-card-component class="flex flex-col gap-2">
+        <h3 class="text-lg">{{post.title }}</h3>
+        <p>{{ post.body }}</p>
+        @if(post.comments){
+        <h4 class="text-lg">Commentaires</h4>
+        <div class="flex flex-wrap">
+            @for (comment of post.comments; track comment.id) {
+            <div class="flex flex-col gap-2 max-w-50">
+                <p>
+                    {{ comment.body }}
+                </p>
+                <p>Écrit par {{ comment.name }} ({{ comment.email }})</p>
+            </div>
+            }
+        </div>
+        }
+    </app-card-component>
+    }
+</div>

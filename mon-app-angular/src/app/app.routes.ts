@@ -7,8 +7,16 @@ export const routes: Routes = [
         loadComponent: () => import('./composants/todo-list-component/todo-list-component').then(f => f.TodoListComponent)
     },
     {
-        path: 'nouveau',
+        path: 'todo-list/nouveau',
         component: CreateUpdateTodoComponent
+    },
+    {
+        path: 'todo-list/modifier/:id',
+        component: CreateUpdateTodoComponent        
+    },
+    {
+        path: 'posts',
+        loadComponent: () => import('./composants/posts-component/posts-component').then(f => f.PostsComponent)
     },
     {
         path: '**',
