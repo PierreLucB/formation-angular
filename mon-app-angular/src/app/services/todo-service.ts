@@ -1,4 +1,5 @@
 import { computed, Injectable, signal, Signal, WritableSignal } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { Todo } from '../models/todo';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class TodoService {
       dateCreation: new Date(),
       id: 1,
       termine: false,
-      titre: 'Todo numéro 1'      
+      titre: 'Todo numéro 1'
     } satisfies Todo
   ]);
 
@@ -22,6 +23,10 @@ export class TodoService {
   }
   getTodoList(): Signal<Todo[]> {
     return this._todos;
+  }
+
+  getTodoById(id: number): Todo | undefined {
+    return this._todos().find(t => t.id === id);
   }
 
   ajouterTodo(nom: string): void {
