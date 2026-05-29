@@ -1,21 +1,18 @@
-import { AsyncPipe, DatePipe, JsonPipe, NgClass } from '@angular/common';
 import { Component, effect, inject, Signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
+import { RouterLink } from "@angular/router";
 import { Observable } from 'rxjs';
 import { Todo } from '../../models/todo';
-import { TodoService } from '../../services/todo-service';
-import { CreateUpdateTodoComponent } from "../create-update-todo-component/create-update-todo-component";
-import { BarrerTexteDirective } from '../../directives/barrer-texte-directive';
 import { MaxLengthPipe } from "../../pipes/max-length-pipe";
-import { MatTable, MatTableModule } from '@angular/material/table';
-import { RouterLink, RouterOutlet } from "@angular/router";
+import { TodoService } from '../../services/todo-service';
 
 @Component({
   selector: 'app-todo-list-component',
-  imports: [DatePipe, FormsModule, CreateUpdateTodoComponent, MatButton, MatCheckbox, AsyncPipe, JsonPipe, BarrerTexteDirective, MatTableModule, MaxLengthPipe, RouterLink, RouterOutlet],
+  imports: [FormsModule, MatButton, MatCheckbox, MatTableModule, MaxLengthPipe, RouterLink],
   templateUrl: './todo-list-component.html',
   styleUrl: './todo-list-component.css'
 })

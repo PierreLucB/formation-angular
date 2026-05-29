@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { SearchInputComponent } from '../search-input-component/search-input-component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Produit } from '../../models/produit';
 
 @Component({
   selector: 'app-search-component',
